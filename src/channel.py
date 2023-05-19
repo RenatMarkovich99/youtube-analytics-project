@@ -24,7 +24,6 @@ class Channel:
     def print_info(self):
         """Выводит в консоль информацию о канале."""
         channel = self.channel.list(id=self._channel_id, part='snippet,statistics').execute()
-        for a, b in channel:
-            print(a, b)
-        #print(key"+")
+        print(channel)
+
 

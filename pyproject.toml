@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "exit"
+version = "0.1.0"
+description = ""
+authors = ["Renat <matador.99@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+isodate = "^0.6.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

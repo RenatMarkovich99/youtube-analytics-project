@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
 api_key = 'AIzaSyAD1nP_uEubiZKJa9-fmcYiKKIXZ7Ud8Fk'
-
+# api_key = os.getenv("YT_API_KEY")
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -13,23 +13,21 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 class Channel:
     """Класс для ютуб-канала"""
 
+    # api_key = os.getenv("YT_API_KEY")
+    # youtube = build('youtube', 'v3', developerKey=api_key)
+
     def __init__(self, channel_id: str, ):
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self._channel_id = channel_id
         self.api_key = api_key
         self.youtube = build('youtube', 'v3', developerKey=api_key)
-        self.name = None
-        self.description = None
-        self.link = None
-        self.subscribers_count = None
-        self.video_count = None
-        self.views_count = None
 
-        channel_data = self.youtube.channels().list(id=self._channel_id,
-                                                    part='snippet, statistics').execute()['items'][0]
-        self.name = channel_data['snippet']['title']
+        channel_data = self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][
+            0]
+
+        self.title = channel_data['snippet']['title']
         self.description = channel_data['snippet']['description']
-        self.link = channel_data['snippet']['customUrl']
+        self.url = channel_data['snippet']['customUrl']
         self.subscribers_count = channel_data['statistics']['subscriberCount']
         self.video_count = channel_data['statistics']['videoCount']
         self.views_count = channel_data['statistics']['viewCount']
@@ -41,7 +39,8 @@ class Channel:
 
     def print_info(self):
         """Выводит в консоль информацию о канале."""
-        channel_response = self.channel.list(id=self._channel_id, part='snippet,statistics').execute()['items'][0]
+        channel_response = \
+            self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
 
         print(channel_response)
 
@@ -60,9 +59,9 @@ class Channel:
         with open(file_path, 'w') as f:
             json.dumps({
                 'id': self._channel_id,
-                'name': self.name,
+                'title': self.title,
+                'url': self.url,
                 'description': self.description,
-                'link': self.link,
                 'subscribersCount': self.subscribers_count,
                 'videoCount': self.video_count,
                 'viewsCount': self.views_count

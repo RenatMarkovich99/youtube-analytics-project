@@ -4,8 +4,8 @@ import json
 from googleapiclient.discovery import build
 
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-api_key = 'AIzaSyAD1nP_uEubiZKJa9-fmcYiKKIXZ7Ud8Fk'
-# api_key = os.getenv("YT_API_KEY")
+
+api_key = os.environ.get("YT_API_KEY")
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -13,7 +13,7 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 class Channel:
     """Класс для ютуб-канала"""
 
-    # api_key = os.getenv("YT_API_KEY")
+    # api_key = os.environ("YT_API_KEY")
     # youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str, ):
@@ -39,8 +39,7 @@ class Channel:
 
     def print_info(self):
         """Выводит в консоль информацию о канале."""
-        channel_response = \
-            self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
+        channel_response = self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
 
         print(channel_response)
 

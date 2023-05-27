@@ -13,8 +13,8 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 class Channel:
     """Класс для ютуб-канала"""
 
-    api_key = os.environ.get("YT_API_KEY")
-    youtube = build('youtube', 'v3', developerKey=api_key)
+    # api_key = os.environ.get("YT_API_KEY")
+    # youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str, ):
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
@@ -32,6 +32,9 @@ class Channel:
         self.video_count = channel_data['statistics']['videoCount']
         self.views_count = channel_data['statistics']['viewCount']
 
+    def __str__(self):
+        return f'{self.title}, ({self.url})'
+
     @property
     def channel(self):
         """Возвращает название канала."""
@@ -39,7 +42,8 @@ class Channel:
 
     def print_info(self):
         """Выводит в консоль информацию о канале."""
-        channel_response = self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
+        channel_response = \
+        self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
 
         print(channel_response)
         print(f"id канала: {self._channel_id}")
@@ -49,7 +53,6 @@ class Channel:
         print(f"Количество подписчиков: {self.subscribers_count}")
         print(f"Количество видео: {self.video_count}")
         print(f"Количество просмотров: {self.views_count}")
-
 
     @classmethod
     def get_service(cls):
@@ -64,7 +67,7 @@ class Channel:
         Сохраняем значения атрибутов экземпляра Channel в json файле
         """
         with open(file_path, 'w') as f:
-            json.dumps({
+            json.dump({
                 'id': self._channel_id,
                 'title': self.title,
                 'url': self.url,

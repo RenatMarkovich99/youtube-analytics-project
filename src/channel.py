@@ -13,8 +13,8 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 class Channel:
     """Класс для ютуб-канала"""
 
-    # api_key = os.environ("YT_API_KEY")
-    # youtube = build('youtube', 'v3', developerKey=api_key)
+    api_key = os.environ.get("YT_API_KEY")
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str, ):
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
@@ -42,6 +42,14 @@ class Channel:
         channel_response = self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
 
         print(channel_response)
+        print(f"id канала: {self._channel_id}")
+        print(f"Название канала: {self.title}")
+        print(f"Описание канала: {self.description}")
+        print(f"Ссылка на канал: {self.url}")
+        print(f"Количество подписчиков: {self.subscribers_count}")
+        print(f"Количество видео: {self.video_count}")
+        print(f"Количество просмотров: {self.views_count}")
+
 
     @classmethod
     def get_service(cls):

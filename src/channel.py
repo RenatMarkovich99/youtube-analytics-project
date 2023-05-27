@@ -35,6 +35,24 @@ class Channel:
     def __str__(self):
         return f'{self.title}, ({self.url})'
 
+    def __add__(self, other):
+        return self.subscribers_count + other.subscribers_count
+
+    def __sub__(self, other):
+        return self.subscribers_count - other.subscribers_count
+
+    def __lt__(self, other):
+        return self.subscribers_count < other.subscribers_count
+
+    def __gt__(self, other):
+        return self.subscribers_count > other.subscribers_count
+
+    def __ge__(self, other):
+        return self.subscribers_count >= other.subscribers_count
+
+    def __le__(self, other):
+        return self.subscribers_count <= other.subscribers_count
+
     @property
     def channel(self):
         """Возвращает название канала."""
@@ -43,7 +61,7 @@ class Channel:
     def print_info(self):
         """Выводит в консоль информацию о канале."""
         channel_response = \
-        self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
+            self.youtube.channels().list(id=self._channel_id, part='snippet, statistics').execute()['items'][0]
 
         print(channel_response)
         print(f"id канала: {self._channel_id}")
